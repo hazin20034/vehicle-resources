@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الموارد والحاسبة</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .card-body {
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .card-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: opacity 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .download-btn:hover {
+            opacity: 0.9;
+        }
+        
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>الموارد والأدوات</h1>
+            <p>الصفحة الثانية من المادة التدريبية وحاسبة الأقساط الشهرية</p>
+        </header>
+        
+        <div class="content">
+            <!-- الصفحة الثانية من المادة التدريبية -->
+            <div class="card">
+                <div class="card-header">📚 المادة التدريبية - الصفحة 2</div>
+                <div class="card-body">
+                    <img src="/page2.png" alt="الصفحة الثانية من المادة التدريبية">
+                    <p style="margin-bottom: 20px; color: #666;">الصفحة الثانية من المادة التدريبية للتمويل التأجيري</p>
+                    <a href="/page2.png" download="page2.png" class="download-btn">تحميل الصورة</a>
+                </div>
+            </div>
+            
+            <!-- حاسبة الأقساط -->
+            <div class="card">
+                <div class="card-header">🧮 حاسبة الأقساط الشهرية</div>
+                <div class="card-body">
+                    <p style="margin-bottom: 20px; color: #666;">احسب الأقساط الشهرية بسهولة باستخدام ملف Excel المتقدم</p>
+                    <a href="/calculator_new.xlsx" download class="download-btn">تحميل الحاسبة</a>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2024 جميع الحقوق محفوظة | بوابة متطلبات العملاء واقتصاد الوقود</p>
+        </footer>
+    </div>
+</body>
+</html>

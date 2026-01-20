@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة الأقساط الشهرية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .input-group input {
+            width: 100%;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .result-currency {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .details {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .details.show {
+            display: block;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #666;
+        }
+
+        .detail-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .error {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 حاسبة الأقساط</h1>
+        <p class="subtitle">احسب قسطك الشهري بسهولة</p>
+
+        <form id="calculatorForm">
+            <div class="form-group">
+                <label for="vehiclePrice">سعر المركبة (ريال)</label>
+                <input type="number" id="vehiclePrice" value="124000" required>
+            </div>
+
+            <div class="form-group">
+                <label>النسب المئوية (%)</label>
+                <div class="input-group">
+                    <div>
+                        <label style="font-size: 12px; margin-bottom: 5px;">الدفعة الأولى</label>
+                        <input type="number" id="downPayment" value="10" step="0.1">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px; margin-bottom: 5px;">التأمين</label>
+                        <input type="number" id="insurance" value="30" step="0.1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>الرسوم والفائدة (%)</label>
+                <div class="input-group">
+                    <div>
+                        <label style="font-size: 12px; margin-bottom: 5px;">الفائدة السنوية</label>
+                        <input type="number" id="interestRate" value="5.7" step="0.1">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px; margin-bottom: 5px;">الرسوم الإدارية</label>
+                        <input type="number" id="adminFees" value="3" step="0.1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>الضمان والمدة</label>
+                <div class="input-group">
+                    <div>
+                        <label style="font-size: 12px; margin-bottom: 5px;">نسبة الضمان</label>
+                        <input type="number" id="warranty" value="1" step="0.1">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px; margin-bottom: 5px;">المدة (سنة)</label>
+                        <input type="number" id="loanPeriod" value="5" min="1">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">احسب القسط الشهري</button>
+            <div class="error" id="error"></div>
+        </form>
+
+        <div class="result-box" id="resultBox">
+            <div class="result-label">القسط الشهري</div>
+            <div class="result-value" id="monthlyPayment">0</div>
+            <div class="result-currency">ريال سعودي</div>
+        </div>
+
+        <div class="details" id="details">
+            <div class="detail-row">
+                <span class="detail-label">الدفعة الأولى:</span>
+                <span class="detail-value" id="detailDownPayment">0</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">التأمين:</span>
+                <span class="detail-value" id="detailInsurance">0</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">المبلغ الممول:</span>
+                <span class="detail-value" id="detailFinanced">0</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">إجمالي الأقساط:</span>
+                <span class="detail-value" id="detailTotal">0</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">عدد الأقساط:</span>
+                <span class="detail-value" id="detailCount">0</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>هذه الحاسبة توفر تقديرات تقريبية</p>
+        </div>
+    </div>
+
+    <script>
+        function formatNumber(num) {
+            return Math.round(num * 100) / 100;
+        }
+
+        function formatCurrency(num) {
+            return formatNumber(num).toLocaleString('ar-SA');
+        }
+
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const vehiclePrice = parseFloat(document.getElementById('vehiclePrice').value);
+            const downPaymentPercent = parseFloat(document.getElementById('downPayment').value);
+            const insurancePercent = parseFloat(document.getElementById('insurance').value);
+            const interestRate = parseFloat(document.getElementById('interestRate').value);
+            const adminFeesPercent = parseFloat(document.getElementById('adminFees').value);
+            const warrantyPercent = parseFloat(document.getElementById('warranty').value);
+            const loanPeriod = parseFloat(document.getElementById('loanPeriod').value);
+
+            if (!vehiclePrice || vehiclePrice <= 0) {
+                showError('يرجى إدخال سعر صحيح للمركبة');
+                return;
+            }
+
+            try {
+                // الحسابات
+                const downPayment = vehiclePrice * (downPaymentPercent / 100);
+                const insurance = vehiclePrice * (insurancePercent / 100);
+                const adminFees = (vehiclePrice - downPayment) * (adminFeesPercent / 100);
+                const warranty = (vehiclePrice - downPayment) * (warrantyPercent / 100);
+                const financedAmount = vehiclePrice - downPayment - insurance;
+
+                const monthlyInterestRate = interestRate / 100 / 12;
+                const numberOfPayments = loanPeriod * 12;
+
+                // معادلة PMT
+                let monthlyPayment = 0;
+                if (monthlyInterestRate > 0) {
+                    monthlyPayment = (financedAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments)) / 
+                                   (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1);
+                } else {
+                    monthlyPayment = financedAmount / numberOfPayments;
+                }
+
+                monthlyPayment += (adminFees + warranty) / numberOfPayments;
+                const totalPayment = monthlyPayment * numberOfPayments;
+
+                // عرض النتائج
+                document.getElementById('monthlyPayment').textContent = formatCurrency(monthlyPayment);
+                document.getElementById('detailDownPayment').textContent = formatCurrency(downPayment);
+                document.getElementById('detailInsurance').textContent = formatCurrency(insurance);
+                document.getElementById('detailFinanced').textContent = formatCurrency(financedAmount);
+                document.getElementById('detailTotal').textContent = formatCurrency(totalPayment);
+                document.getElementById('detailCount').textContent = numberOfPayments;
+
+                document.getElementById('resultBox').classList.add('show');
+                document.getElementById('details').classList.add('show');
+                document.getElementById('error').classList.remove('show');
+
+            } catch (error) {
+                showError('حدث خطأ في الحساب');
+            }
+        });
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            document.getElementById('resultBox').classList.remove('show');
+            document.getElementById('details').classList.remove('show');
+        }
+
+        // حساب تلقائي عند تحميل الصفحة
+        document.getElementById('calculatorForm').dispatchEvent(new Event('submit'));
+    </script>
+</body>
+</html>
